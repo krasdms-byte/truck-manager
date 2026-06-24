@@ -1,0 +1,25 @@
+# База данных
+*.db
+*.db-shm
+*.db-wal
+
+# Бэкапы и экспорты
+backups/
+exports/
+*.zip
+
+# Сборка
+dist/
+
+# Зависимости
+node_modules/
+
+# Системные файлы
+.DS_Store
+*.log
+
+# Настройки приложения (содержат ключи API)
+settings.json
+
+# Контекстные файлы сессий
+PROJECT_CONTEXT_*.md

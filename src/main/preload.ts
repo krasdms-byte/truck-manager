@@ -1,0 +1,33 @@
+const { contextBridge, ipcRenderer } = require("electron");
+const api = {
+  auth: { login: (d) => ipcRenderer.invoke("auth:login",d), logout: () => ipcRenderer.invoke("auth:logout"), verify: (t) => ipcRenderer.invoke("auth:verify",t) },
+  income: { getAll: (f) => ipcRenderer.invoke("income:getAll",f), create: (d) => ipcRenderer.invoke("income:create",d), update: (id,d) => ipcRenderer.invoke("income:update",id,d), remove: (id) => ipcRenderer.invoke("income:remove",id), getTotal: (f) => ipcRenderer.invoke("income:getTotal",f) },
+  trips: { getAll: (f) => ipcRenderer.invoke("trips:getAll",f), create: (d) => ipcRenderer.invoke("trips:create",d), update: (id,d) => ipcRenderer.invoke("trips:update",id,d), remove: (id) => ipcRenderer.invoke("trips:remove",id), getSummary: (f) => ipcRenderer.invoke("trips:getSummary",f) },
+  employees: { getAll: (f) => ipcRenderer.invoke("employees:getAll",f), getById: (id) => ipcRenderer.invoke("employees:getById",id), create: (d) => ipcRenderer.invoke("employees:create",d), update: (id,d) => ipcRenderer.invoke("employees:update",id,d), getShifts: (f) => ipcRenderer.invoke("employees:getShifts",f), setShift: (d) => ipcRenderer.invoke("employees:setShift",d), getPayments: (f) => ipcRenderer.invoke("employees:getPayments",f), addPayment: (d) => ipcRenderer.invoke("employees:addPayment",d), getSalary: (id,m) => ipcRenderer.invoke("employees:getSalary",id,m) },
+  expenses: { getAll: (f) => ipcRenderer.invoke("expenses:getAll",f), create: (d) => ipcRenderer.invoke("expenses:create",d), update: (id,d) => ipcRenderer.invoke("expenses:update",id,d), remove: (id) => ipcRenderer.invoke("expenses:remove",id) },
+  parts: { getAll: (f) => ipcRenderer.invoke("parts:getAll",f), create: (d) => ipcRenderer.invoke("parts:create",d), update: (id,d) => ipcRenderer.invoke("parts:update",id,d), remove: (id) => ipcRenderer.invoke("parts:remove",id), receipts: { getAll: (pid?) => ipcRenderer.invoke("parts:receipts:getAll",pid), create: (d) => ipcRenderer.invoke("parts:receipts:create",d), remove: (id) => ipcRenderer.invoke("parts:receipts:remove",id) } },
+  projects: { getAll: (f) => ipcRenderer.invoke("projects:getAll",f), getById: (id) => ipcRenderer.invoke("projects:getById",id), create: (d) => ipcRenderer.invoke("projects:create",d), update: (id,d) => ipcRenderer.invoke("projects:update",id,d), remove: (id) => ipcRenderer.invoke("projects:remove",id), getSummary: (id,f) => ipcRenderer.invoke("projects:getSummary",id,f), getRateGrid: (id) => ipcRenderer.invoke("projects:getRateGrid",id), saveRateGrid: (id,rows) => ipcRenderer.invoke("projects:saveRateGrid",id,rows), getRateForDistance: (id,km) => ipcRenderer.invoke("projects:getRateForDistance",id,km) },
+  trucks: { getAll: () => ipcRenderer.invoke("trucks:getAll"), getAllWithStats: (pid) => ipcRenderer.invoke("trucks:getAllWithStats",pid), create: (d) => ipcRenderer.invoke("trucks:create",d), update: (id,d) => ipcRenderer.invoke("trucks:update",id,d) },
+  reports: { getSummary: (f) => ipcRenderer.invoke("reports:getSummary",f), getByTruck: (f) => ipcRenderer.invoke("reports:getByTruck",f), getByDriver: (f) => ipcRenderer.invoke("reports:getByDriver",f), getMonthly: (y) => ipcRenderer.invoke("reports:getMonthly",y), getDebts: (f?) => ipcRenderer.invoke("reports:getDebts",f), getProjectOrgSummary: (f?) => ipcRenderer.invoke("reports:getProjectOrgSummary",f) },
+  backup: { create: () => ipcRenderer.invoke("backup:create"), list: () => ipcRenderer.invoke("backup:list"), restore: (f) => ipcRenderer.invoke("backup:restore",f) },
+  dict: { categories: { getAll: () => ipcRenderer.invoke("dict:categories:getAll"), create: (n) => ipcRenderer.invoke("dict:categories:create",n), update: (id,n) => ipcRenderer.invoke("dict:categories:update",id,n), remove: (id) => ipcRenderer.invoke("dict:categories:remove",id) }, units: { getAll: () => ipcRenderer.invoke("dict:units:getAll"), create: (n) => ipcRenderer.invoke("dict:units:create",n), update: (id,n) => ipcRenderer.invoke("dict:units:update",id,n), remove: (id) => ipcRenderer.invoke("dict:units:remove",id) }, items: { getAll: (f) => ipcRenderer.invoke("dict:items:getAll",f), create: (d) => ipcRenderer.invoke("dict:items:create",d), update: (id,d) => ipcRenderer.invoke("dict:items:update",id,d), remove: (id) => ipcRenderer.invoke("dict:items:remove",id) } },
+  accommodation: {
+    getSettings:   (pid) => ipcRenderer.invoke('accommodation:getSettings', pid),
+    saveSettings:  (pid, d) => ipcRenderer.invoke('accommodation:saveSettings', pid, d),
+    getWorkers:    (pid) => ipcRenderer.invoke('accommodation:getWorkers', pid),
+    setWorker:     (pid, eid, s, e) => ipcRenderer.invoke('accommodation:setWorker', pid, eid, s, e),
+    removeWorker:  (pid, eid) => ipcRenderer.invoke('accommodation:removeWorker', pid, eid),
+    calcDebts:     (pid, m) => ipcRenderer.invoke('accommodation:calcDebts', pid, m),
+    getDebts:      (pid) => ipcRenderer.invoke('accommodation:getDebts', pid),
+    getAllDebts:    () => ipcRenderer.invoke('accommodation:getAllDebts'),
+    saveDebt:      (d) => ipcRenderer.invoke('accommodation:saveDebt', d),
+    closeDebt:     (id, amt, iid?) => ipcRenderer.invoke('accommodation:closeDebt', id, amt, iid),
+    closeMultiple:   (ids, amt, iid?) => ipcRenderer.invoke('accommodation:closeMultiple', ids, amt, iid),
+    setActualAmount: (id, amt) => ipcRenderer.invoke('accommodation:setActualAmount', id, amt),
+  },
+  organizations: { getAll: (f?) => ipcRenderer.invoke("organizations:getAll",f), create: (d) => ipcRenderer.invoke("organizations:create",d), update: (id,d) => ipcRenderer.invoke("organizations:update",id,d), remove: (id) => ipcRenderer.invoke("organizations:remove",id), getDebts: (f?) => ipcRenderer.invoke("organizations:getDebts",f), closeDebt: (eid,iid?) => ipcRenderer.invoke("organizations:closeDebt",eid,iid), lookupInn: (inn) => ipcRenderer.invoke("organizations:lookupInn",inn) },
+  audit: { getLog: (f) => ipcRenderer.invoke("audit:getLog",f), getTables: () => ipcRenderer.invoke("audit:getTables") },
+  claude: { recognize: (b64, mt) => ipcRenderer.invoke("claude:recognize", b64, mt) },
+  settings: { get: (k) => ipcRenderer.invoke("settings:get", k), set: (k, v) => ipcRenderer.invoke("settings:set", k, v) },
+};
+contextBridge.exposeInMainWorld("api", api);
