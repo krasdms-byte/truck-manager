@@ -23,3 +23,6 @@ settings.json
 
 # Контекстные файлы сессий
 PROJECT_CONTEXT_*.md
+
+# Настройки Claude Code (содержат локальные пути)
+.claude/settings.local.json
